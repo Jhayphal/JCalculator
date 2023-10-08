@@ -129,7 +129,7 @@ namespace MathExpressionResolver
 
 				return true;
 			}
-			else if (current == '-' || current == '+')
+			else if ((current == '-' || current == '+') && index < expression.Length - 1)
 			{
 				int bracketIndex = index + 1;
 

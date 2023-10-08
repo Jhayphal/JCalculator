@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using JCalculator.Views;
 using JCalculator.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace JCalculator
 {
@@ -13,6 +14,7 @@ namespace JCalculator
 		{
 			var host = Host.CreateDefaultBuilder(args)
 				.ConfigureServices(RegisterServices)
+				.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace))
 				.Build();
 
 			var app = host.Services.GetService<App>();

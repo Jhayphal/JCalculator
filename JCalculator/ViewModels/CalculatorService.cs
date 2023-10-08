@@ -1,6 +1,5 @@
 ﻿using MathExpressionResolver;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace JCalculator.ViewModels
@@ -90,7 +89,7 @@ namespace JCalculator.ViewModels
 		{
 			var tokenizer = new Tokenizer(supportedOperators);
 			var tokens = tokenizer.GetTokens(expression).ToList();
-			return string.Join(string.Empty, tokens.Take(tokens.Count - 1));
+			return string.Join(string.Empty, tokens.Select(t => t.Value).Take(tokens.Count - 1));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using JCalculator.Views;
+using Microsoft.Extensions.Logging;
 using System.Windows;
 
 namespace JCalculator
@@ -7,9 +8,11 @@ namespace JCalculator
 	{
 		private readonly MainWindow window;
 
-		public App(MainWindow window)
+		public App(MainWindow window, ILogger<App> logger)
 		{
 			this.window = window;
+			DispatcherUnhandledException += (sender, e) 
+				=> logger.LogCritical(e.Exception.ToString());
 		}
 
 		protected override void OnStartup(StartupEventArgs e)

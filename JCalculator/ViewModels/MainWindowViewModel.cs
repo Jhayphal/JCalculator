@@ -1,28 +1,46 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 
 namespace JCalculator.ViewModels
 {
 	public sealed partial class MainWindowViewModel : ObservableObject
 	{
+		private const string ExecutedExpressionDefault = "0";
+		private const string ExecutedExpressionError = "?";
+		private const string ValueDefault = "";
+
 		private readonly ICalculatorService calculator;
+		private readonly ILogger<MainWindowViewModel> logger;
 
 		[ObservableProperty]
-		private string executedExpression = "0";
+		private string executedExpression = ExecutedExpressionDefault;
 
 		[ObservableProperty]
+		[NotifyCanExecuteChangedFor(nameof(ClearCommand))]
 		[NotifyCanExecuteChangedFor(nameof(DropLastTokenCommand))]
 		[NotifyCanExecuteChangedFor(nameof(DeleteCommand))]
 		[NotifyCanExecuteChangedFor(nameof(InverseCommand))]
 		private string value = string.Empty;
 
-        public MainWindowViewModel(ICalculatorService calculatorService)
+        public MainWindowViewModel(ICalculatorService calculatorService, ILogger<MainWindowViewModel> logger)
         {
 			calculator = calculatorService;
+			this.logger = logger;
         }
 
 		[RelayCommand]
 		private void Push(string @char) => Value += @char;
+
+		[RelayCommand(CanExecute = nameof(CanClear))]
+		private void Clear()
+		{
+			Value = ValueDefault;
+			ExecutedExpression = ExecutedExpressionDefault;
+		}
+
+		private bool CanClear()
+			=> Value != ValueDefault || ExecutedExpression != ExecutedExpressionDefault;
 
 		[RelayCommand(CanExecute = nameof(CanDropLastToken))]
 		private void DropLastToken()
@@ -60,7 +78,7 @@ namespace JCalculator.ViewModels
 			}
 			else
 			{
-				ExecutedExpression = "?";
+				ExecutedExpression = ExecutedExpressionError;
 			}
 		}
 	}
