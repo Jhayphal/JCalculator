@@ -89,10 +89,10 @@
 
 			if (previously.Type == TokenType.Operator)
 			{
-				var compare = supportedOperators.CompareTo(previously.Value, current.Value);
+				var compare = supportedOperators.CompareTo(previously.Value[0], current.Value[0]);
 
 				if (compare > 0
-					|| compare == 0 && supportedOperators.IsLeftAssociative(previously.Value))
+					|| compare == 0 && supportedOperators.IsLeftAssociative(previously.Value[0]))
 				{
 					outputQueue.Enqueue(stack.Pop());
 

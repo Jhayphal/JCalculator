@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using System.Windows;
 
 namespace JCalculator.ViewModels
 {
@@ -41,6 +42,12 @@ namespace JCalculator.ViewModels
 
 		private bool CanClear()
 			=> Value != ValueDefault || ExecutedExpression != ExecutedExpressionDefault;
+
+		[RelayCommand]
+		private void CopyResult() => Clipboard.SetText(Value);
+
+		[RelayCommand]
+		private void CopyExpression() => Clipboard.SetText(ExecutedExpression);
 
 		[RelayCommand(CanExecute = nameof(CanDropLastToken))]
 		private void DropLastToken()

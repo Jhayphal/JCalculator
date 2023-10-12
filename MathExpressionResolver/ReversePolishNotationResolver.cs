@@ -29,7 +29,7 @@
 						var b = operands.Pop();
 						var a = operands.Pop();
 
-						var operationResult = operators.Calculate(current.Value, a, b);
+						var operationResult = operators.Calculate(current.Value[0], a, b);
 
 						operands.Push(operationResult);
 

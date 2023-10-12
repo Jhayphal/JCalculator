@@ -2,7 +2,7 @@
 {
 	internal class OperatorInfo : IEquatable<OperatorInfo>, IComparable<OperatorInfo>
 	{
-		public readonly string Operator;
+		public readonly char Operator;
 
 		public readonly int Priority;
 
@@ -10,11 +10,11 @@
 
 		public readonly Func<double, double, double> Calculate;
 
-		public readonly string? Opposite;
+		public readonly char? Opposite;
 
-		public OperatorInfo(string @operator, int priority, bool leftAssociative, Func<double, double, double> calculate, string? opposite = null)
+		public OperatorInfo(char @operator, int priority, bool leftAssociative, Func<double, double, double> calculate, char? opposite = null)
 		{
-			if (string.IsNullOrWhiteSpace(@operator))
+			if (char.IsWhiteSpace(@operator))
 				throw new ArgumentException(nameof(@operator));
 
 			Operator = @operator;
@@ -42,13 +42,10 @@
 			if (obj is OperatorInfo @operator)
 				return Equals(@operator.Operator);
 
-			if (obj is string @operatorString)
-				return Equals(@operatorString);
-
 			if (obj is char @operatorChar)
 				return Equals(@operatorChar);
 
-			return Equals(obj.ToString()!);
+			return false;
 		}
 
 		public bool Equals(OperatorInfo? other)
@@ -59,12 +56,10 @@
 			return Equals(other.Operator);
 		}
 
-		public bool Equals(string other) => string.Equals(Operator, other);
-
-		public bool Equals(char other) => Equals(other.ToString());
+		public bool Equals(char other) => Operator == other;
 
 		public override int GetHashCode() => Operator.GetHashCode();
 
-		public override string ToString() => Operator;
+		public override string ToString() => Operator.ToString();
 	}
 }

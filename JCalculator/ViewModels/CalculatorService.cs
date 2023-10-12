@@ -12,14 +12,14 @@ namespace JCalculator.ViewModels
 		{
 			supportedOperators = new SupportedOperators();
 
-			supportedOperators.Add(@operator: "+", priority: 0, leftAssociative: true, calculate: (a, b) => a + b, opposite: "-");
-			supportedOperators.Add(@operator: "-", priority: 0, leftAssociative: true, calculate: (a, b) => a - b, opposite: "+");
-			supportedOperators.Add(@operator: "*", priority: 1, leftAssociative: true, calculate: (a, b) => a * b);
-			supportedOperators.Add(@operator: "×", priority: 1, leftAssociative: true, calculate: (a, b) => a * b);
-			supportedOperators.Add(@operator: "/", priority: 1, leftAssociative: true, calculate: (a, b) => a / b);
-			supportedOperators.Add(@operator: "÷", priority: 1, leftAssociative: true, calculate: (a, b) => a / b);
-			supportedOperators.Add(@operator: "^", priority: 2, leftAssociative: false, calculate: (a, b) => Math.Pow(a, b));
-			supportedOperators.Add(@operator: "%", priority: 3, leftAssociative: false, calculate: (a, b) => a * (b / 100));
+			supportedOperators.Add(@operator: '+', priority: 0, leftAssociative: true, calculate: (a, b) => a + b, opposite: '-');
+			supportedOperators.Add(@operator: '-', priority: 0, leftAssociative: true, calculate: (a, b) => a - b, opposite: '+');
+			supportedOperators.Add(@operator: '*', priority: 1, leftAssociative: true, calculate: (a, b) => a * b);
+			supportedOperators.Add(@operator: '×', priority: 1, leftAssociative: true, calculate: (a, b) => a * b);
+			supportedOperators.Add(@operator: '/', priority: 1, leftAssociative: true, calculate: (a, b) => a / b);
+			supportedOperators.Add(@operator: '÷', priority: 1, leftAssociative: true, calculate: (a, b) => a / b);
+			supportedOperators.Add(@operator: '^', priority: 2, leftAssociative: false, calculate: (a, b) => Math.Pow(a, b));
+			supportedOperators.Add(@operator: '%', priority: 3, leftAssociative: false, calculate: (a, b) => a * (b / 100));
 		}
 
 		public bool TryCalculate(string expression, out string result)
@@ -46,15 +46,15 @@ namespace JCalculator.ViewModels
 				var tokenizer = new Tokenizer(supportedOperators);
 				var tokens = tokenizer.GetTokens(expression).ToList();
 				var lastToken = tokens[^1];
-				var opposite = string.Empty;
+				var opposite = char.MinValue;
 
 				switch (lastToken.Type)
 				{
 					case TokenType.Number:
-						if (tokens.Count > 1 && tokens[^2].Type == TokenType.Operator && supportedOperators.TryGetOpposite(tokens[^2].Value, out opposite))
+						if (tokens.Count > 1 && tokens[^2].Type == TokenType.Operator && supportedOperators.TryGetOpposite(tokens[^2].Value[0], out opposite))
 						{
 							var prevToken = tokens[^2];
-							prevToken.Value = opposite;
+							prevToken.Value = opposite.ToString();
 							tokens[^2] = prevToken;
 						}
 						else
@@ -65,8 +65,8 @@ namespace JCalculator.ViewModels
 
 						break;
 
-					case TokenType.Operator when supportedOperators.TryGetOpposite(lastToken.Value, out opposite):
-						lastToken.Value = opposite;
+					case TokenType.Operator when supportedOperators.TryGetOpposite(lastToken.Value[0], out opposite):
+						lastToken.Value = opposite.ToString();
 						tokens[^1] = lastToken;
 						break;
 

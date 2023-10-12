@@ -34,8 +34,8 @@
                   <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="CommonStates">
                       <VisualStateGroup.Transitions>
-                        <VisualTransition To="MouseOver" GeneratedDuration="0:0:0.5"/>
-                        <VisualTransition GeneratedDuration="0" To="Pressed" />
+                        <VisualTransition To="MouseOver" GeneratedDuration="0:0:0.3"/>
+                        <VisualTransition To="Pressed" GeneratedDuration="0:0:0.2"/>
                       </VisualStateGroup.Transitions>
                       <VisualState x:Name="Normal"/>
                       <VisualState x:Name="MouseOver">
@@ -43,6 +43,14 @@
                           <ColorAnimation Storyboard.TargetName="ButtonBorder"
                                           Storyboard.TargetProperty="Background.Color"
                                           To="#3D3D3D" />
+                        </Storyboard>
+                      </VisualState>
+                      <VisualState x:Name="Pressed">
+                        <Storyboard>
+                          <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                                          Storyboard.TargetProperty="Background.Color"
+                                          To="#2E2E2E"
+                                          AutoReverse="True"/>
                         </Storyboard>
                       </VisualState>
                     </VisualStateGroup>
@@ -60,7 +68,7 @@
       </Grid.RowDefinitions>
       <DockPanel Grid.Row="0">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Right">
-          <RepeatButton Grid.Row="0" Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}">⎘</RepeatButton>
+          <RepeatButton Command="{Binding CopyExpressionCommand}" Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}">⎘</RepeatButton>
         </Viewbox>
         <Viewbox HorizontalAlignment="Right">
           <TextBox Foreground="{StaticResource WhiteBrush}" Background="{StaticResource BlackBrush}" BorderThickness="0" IsReadOnly="True" Text="{Binding ExecutedExpression}"/>
@@ -68,7 +76,7 @@
       </DockPanel>
       <DockPanel Grid.Row="1">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Stretch">
-            <RepeatButton Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}">⎘</RepeatButton>
+          <RepeatButton Command="{Binding CopyResultCommand}" Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}">⎘</RepeatButton>
         </Viewbox>
         <Viewbox HorizontalAlignment="Right">
             <TextBox Name="Expression"
