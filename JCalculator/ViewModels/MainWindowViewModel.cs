@@ -13,6 +13,7 @@ namespace JCalculator.ViewModels
 
 		private readonly ICalculatorService calculator;
 		private readonly ILogger<MainWindowViewModel> logger;
+		private readonly InputHelper input;
 
 		[ObservableProperty]
 		private string executedExpression = ExecutedExpressionDefault;
@@ -28,10 +29,11 @@ namespace JCalculator.ViewModels
         {
 			calculator = calculatorService;
 			this.logger = logger;
+			input = new InputHelper(this);
         }
 
 		[RelayCommand]
-		private void Push(string @char) => Value += @char;
+		private void Push(string @char) => input.Insert(@char);
 
 		[RelayCommand(CanExecute = nameof(CanClear))]
 		private void Clear()
@@ -58,7 +60,7 @@ namespace JCalculator.ViewModels
 		private bool CanDropLastToken() => Value.Length > 0;
 
 		[RelayCommand(CanExecute = nameof(CanDelete))]
-		private void Delete() => Value = Value[..^1];
+		private void Delete() => input.Delete();
 
 		private bool CanDelete() => Value.Length > 0;
 

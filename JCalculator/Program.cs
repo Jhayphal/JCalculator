@@ -14,7 +14,7 @@ namespace JCalculator
 		{
 			var host = Host.CreateDefaultBuilder(args)
 				.ConfigureServices(RegisterServices)
-				.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace))
+				.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Debug))
 				.Build();
 
 			var app = host.Services.GetService<App>();
