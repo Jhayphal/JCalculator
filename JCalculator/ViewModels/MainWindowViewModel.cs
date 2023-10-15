@@ -46,7 +46,7 @@ namespace JCalculator.ViewModels
 			=> Value != ValueDefault || ExecutedExpression != ExecutedExpressionDefault;
 
 		[RelayCommand]
-		private void CopyResult() => Clipboard.SetText(Value);
+		private void PasteResult() => input.Text.Paste();
 
 		[RelayCommand]
 		private void CopyExpression() => Clipboard.SetText(ExecutedExpression);
@@ -69,7 +69,7 @@ namespace JCalculator.ViewModels
 		{
 			if (calculator.TryInverseLastToken(Value, out var result))
 			{
-				Value = result;
+				input.Set(result);
 			}
 		}
 
@@ -90,5 +90,11 @@ namespace JCalculator.ViewModels
 				ExecutedExpression = ExecutedExpressionError;
 			}
 		}
+
+		[RelayCommand(CanExecute = nameof(CanGetResult))]
+		private void GetResult() => input.Set(ExecutedExpression);
+
+		private bool CanGetResult()
+			=> ExecutedExpression != ExecutedExpressionError;
 	}
 }

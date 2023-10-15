@@ -27,6 +27,12 @@ namespace JCalculator.ViewModels
 			}
 		}
 
+		public void Set(string value)
+		{
+			viewModel.Value = value;
+			Text.CaretIndex = value.Length;
+		}
+
 		public void Insert(string @char)
 		{
 			if (Text.SelectionLength > 0)

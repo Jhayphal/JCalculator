@@ -68,7 +68,9 @@
       </Grid.RowDefinitions>
       <DockPanel Grid.Row="0">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Right">
-          <RepeatButton Command="{Binding CopyExpressionCommand}" Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}">⎘</RepeatButton>
+          <RepeatButton Command="{Binding CopyExpressionCommand}"
+                        Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
+                        ToolTip="Копировать">⎘</RepeatButton>
         </Viewbox>
         <Viewbox HorizontalAlignment="Right">
           <TextBox Foreground="{StaticResource WhiteBrush}" Background="{StaticResource BlackBrush}" BorderThickness="0" IsReadOnly="True" Text="{Binding ExecutedExpression}"/>
@@ -76,7 +78,9 @@
       </DockPanel>
       <DockPanel Grid.Row="1">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Stretch">
-          <RepeatButton Command="{Binding CopyResultCommand}" Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}">⎘</RepeatButton>
+          <RepeatButton Command="{Binding PasteResultCommand}"
+                        Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
+                        ToolTip="Вставить">📋</RepeatButton>
         </Viewbox>
         <Viewbox HorizontalAlignment="Right">
             <TextBox Name="Expression"
@@ -173,7 +177,7 @@
       <RepeatButton Grid.Row="5" Grid.Column="2" Command="{Binding PushCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource RedGrayStyle}">%</RepeatButton>
       <RepeatButton Grid.Row="6" Grid.Column="0" Command="{Binding PushCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">×</RepeatButton>
       <RepeatButton Grid.Row="6" Grid.Column="1" Command="{Binding PushCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">÷</RepeatButton>
-      <RepeatButton Grid.Row="6" Grid.Column="2" Command="{Binding PushCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource RedGrayStyle}">=</RepeatButton>
+      <RepeatButton Grid.Row="6" Grid.Column="2" Command="{Binding GetResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource RedGrayStyle}">=</RepeatButton>
     </UniformGrid>
   </Grid>
 </Window>
