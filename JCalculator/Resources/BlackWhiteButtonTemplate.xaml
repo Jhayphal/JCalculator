@@ -1,0 +1,77 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ControlTemplate x:Key="BlackWhiteButtonTemplate" TargetType="{x:Type RepeatButton}">
+    <ControlTemplate.Resources>
+      <Color x:Key="BlackColor">#2E2E2E</Color>
+      <Color x:Key="LightBlackColor">#3D3D3D</Color>
+      <Color x:Key="WhiteColor">#EBEBEB</Color>
+      <Color x:Key="GrayColor">#D3D3D5</Color>
+
+      <Duration x:Key="AnimationTime">0:0:0.25</Duration>
+
+      <Storyboard x:Key="NormalAnimation">
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                        Storyboard.TargetProperty="Background.Color"
+                        To="{StaticResource WhiteColor}"
+                        Duration="{StaticResource AnimationTime}"/>
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                        Storyboard.TargetProperty="(TextElement.Foreground).Color"
+                        To="{StaticResource BlackColor}"
+                        Duration="{StaticResource AnimationTime}"/>
+      </Storyboard>
+
+      <Storyboard x:Key="MouseOverAnimation">
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                        Storyboard.TargetProperty="Background.Color"
+                        To="{StaticResource GrayColor}"
+                        Duration="{StaticResource AnimationTime}"/>
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                        Storyboard.TargetProperty="(TextElement.Foreground).Color"
+                        To="{StaticResource LightBlackColor}"
+                        Duration="{StaticResource AnimationTime}"/>
+      </Storyboard>
+
+      <Storyboard x:Key="PressedAnimation">
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                        Storyboard.TargetProperty="Background.Color"
+                        To="{StaticResource WhiteColor}"
+                        Duration="{StaticResource AnimationTime}"
+                        AutoReverse="True"/>
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                        Storyboard.TargetProperty="(TextElement.Foreground).Color"
+                        To="Black"
+                        Duration="{StaticResource AnimationTime}"
+                        AutoReverse="True"/>
+      </Storyboard>
+
+      <Storyboard x:Key="DisabledAnimation">
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                  Storyboard.TargetProperty="Background.Color"
+                  To="{StaticResource WhiteColor}"
+                  Duration="{StaticResource AnimationTime}"/>
+        <ColorAnimation Storyboard.TargetName="ButtonBorder"
+                  Storyboard.TargetProperty="(TextElement.Foreground).Color"
+                  To="Gray"
+                  Duration="{StaticResource AnimationTime}"/>
+      </Storyboard>
+    </ControlTemplate.Resources>
+
+    <Border x:Name="ButtonBorder"
+            Background="{TemplateBinding Background}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            TextElement.Foreground="{TemplateBinding Foreground}">
+
+      <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="CommonStates">
+          <VisualState x:Name="Normal" Storyboard="{StaticResource NormalAnimation}"/>
+          <VisualState x:Name="MouseOver" Storyboard="{StaticResource MouseOverAnimation}"/>
+          <VisualState x:Name="Pressed" Storyboard="{StaticResource PressedAnimation}"/>
+          <VisualState x:Name="Disabled" Storyboard="{StaticResource DisabledAnimation}"/>
+        </VisualStateGroup>
+      </VisualStateManager.VisualStateGroups>
+
+      <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
+  </ControlTemplate>
+</ResourceDictionary>

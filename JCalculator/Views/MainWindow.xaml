@@ -8,8 +8,18 @@
         FocusManager.FocusedElement="{Binding ElementName=Expression}">
   <Grid>
     <Grid.Resources>
-      <SolidColorBrush x:Key="BlackBrush" Color="#2E2E2E"/>
-      <SolidColorBrush x:Key="WhiteBrush" Color="#EBEBEB"/>
+      <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+          <ResourceDictionary Source="/Resources/ScreenButtonTemplate.xaml"/>
+          <ResourceDictionary Source="/Resources/BlackGrayButtonTemplate.xaml"/>
+          <ResourceDictionary Source="/Resources/BlackWhiteButtonTemplate.xaml"/>
+          <ResourceDictionary Source="/Resources/RedGrayButtonTemplate.xaml"/>
+          <ResourceDictionary Source="/Resources/WhiteRedButtonTemplate.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+      
+        <SolidColorBrush x:Key="BlackBrush" Color="#2E2E2E"/>
+        <SolidColorBrush x:Key="WhiteBrush" Color="#EBEBEB"/>
+      </ResourceDictionary>
     </Grid.Resources>
     <Grid.RowDefinitions>
       <RowDefinition Height="3*"/>
@@ -17,7 +27,7 @@
     </Grid.RowDefinitions>
     <Grid Grid.Row="0" Background="{StaticResource BlackBrush}">
       <Grid.Resources>
-        <Style TargetType="RepeatButton">
+        <Style x:Key="CopyPasteButtonStyle" TargetType="{x:Type Button}">
           <Setter Property="Background" Value="{StaticResource BlackBrush}"/>
           <Setter Property="Foreground" Value="White"/>
           <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -26,40 +36,7 @@
           <Setter Property="BorderThickness" Value="0"/>
           <Setter Property="Width" Value="20"/>
           <Setter Property="Focusable" Value="False"/>
-          <Setter Property="Template">
-            <Setter.Value>
-              <ControlTemplate TargetType="RepeatButton">
-                <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                  <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                      <VisualStateGroup.Transitions>
-                        <VisualTransition To="MouseOver" GeneratedDuration="0:0:0.3"/>
-                        <VisualTransition To="Pressed" GeneratedDuration="0:0:0.2"/>
-                      </VisualStateGroup.Transitions>
-                      <VisualState x:Name="Normal"/>
-                      <VisualState x:Name="MouseOver">
-                        <Storyboard>
-                          <ColorAnimation Storyboard.TargetName="ButtonBorder"
-                                          Storyboard.TargetProperty="Background.Color"
-                                          To="#3D3D3D" />
-                        </Storyboard>
-                      </VisualState>
-                      <VisualState x:Name="Pressed">
-                        <Storyboard>
-                          <ColorAnimation Storyboard.TargetName="ButtonBorder"
-                                          Storyboard.TargetProperty="Background.Color"
-                                          To="#2E2E2E"
-                                          AutoReverse="True"/>
-                        </Storyboard>
-                      </VisualState>
-                    </VisualStateGroup>
-                  </VisualStateManager.VisualStateGroups>
-                  <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </Border>
-              </ControlTemplate>
-            </Setter.Value>
-          </Setter>
+          <Setter Property="Template" Value="{StaticResource ScreenButtonTemplate}"/>
         </Style>
       </Grid.Resources>
       <Grid.RowDefinitions>
@@ -68,19 +45,25 @@
       </Grid.RowDefinitions>
       <DockPanel Grid.Row="0">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Right">
-          <RepeatButton Command="{Binding CopyExpressionCommand}"
-                        Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
-                        ToolTip="Копировать">⎘</RepeatButton>
+          <Button Command="{Binding CopyExpressionCommand}"
+                  Style="{StaticResource CopyPasteButtonStyle}"
+                  Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
+                  ToolTip="Копировать">⎘</Button>
         </Viewbox>
         <Viewbox HorizontalAlignment="Right">
-          <TextBox Foreground="{StaticResource WhiteBrush}" Background="{StaticResource BlackBrush}" BorderThickness="0" IsReadOnly="True" Text="{Binding ExecutedExpression}"/>
+          <TextBox Foreground="{StaticResource WhiteBrush}" 
+                   Background="{StaticResource BlackBrush}" 
+                   BorderThickness="0" 
+                   IsReadOnly="True" 
+                   Text="{Binding ExecutedExpression}"/>
         </Viewbox>
       </DockPanel>
       <DockPanel Grid.Row="1">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Stretch">
-          <RepeatButton Command="{Binding PasteResultCommand}"
-                        Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
-                        ToolTip="Вставить">📋</RepeatButton>
+          <Button Command="{Binding PasteResultCommand}"
+                  Style="{StaticResource CopyPasteButtonStyle}"
+                  Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
+                  ToolTip="Вставить">📋</Button>
         </Viewbox>
         <Viewbox HorizontalAlignment="Right">
             <TextBox Name="Expression"
@@ -114,47 +97,29 @@
             </Setter.Value>
           </Setter>
         </Style>
-        <Style x:Key="BlackGrayButtonStyle" BasedOn="{StaticResource BaseButtonStyle}" TargetType="RepeatButton">
-          <Style.Setters>
-            <Setter Property="Background" Value="{StaticResource GrayBrush}"/>
-          </Style.Setters>
-          <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{StaticResource DarkGrayBrush}"/>
-            </Trigger>
-          </Style.Triggers>
+        
+        <Style x:Key="BlackGrayButtonStyle"
+               BasedOn="{StaticResource BaseButtonStyle}"
+               TargetType="{x:Type RepeatButton}">
+          <Setter Property="Template" Value="{StaticResource BlackGrayButtonTemplate}"/>
         </Style>
-        <Style x:Key="BlackWhiteButtonStyle" BasedOn="{StaticResource BaseButtonStyle}" TargetType="RepeatButton">
-          <Style.Setters>
-            <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
-          </Style.Setters>
-          <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{StaticResource GrayBrush}"/>
-            </Trigger>
-          </Style.Triggers>
+        
+        <Style x:Key="BlackWhiteButtonStyle"
+               BasedOn="{StaticResource BaseButtonStyle}"
+               TargetType="{x:Type RepeatButton}">
+          <Setter Property="Template" Value="{StaticResource BlackWhiteButtonTemplate}"/>
         </Style>
-        <Style x:Key="RedGrayStyle" BasedOn="{StaticResource BaseButtonStyle}" TargetType="RepeatButton">
-          <Style.Setters>
-            <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
-            <Setter Property="Background" Value="{StaticResource GrayBrush}"/>
-          </Style.Setters>
-          <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{StaticResource DarkGrayBrush}"/>
-            </Trigger>
-          </Style.Triggers>
+        
+        <Style x:Key="RedGrayStyle"
+               BasedOn="{StaticResource BaseButtonStyle}"
+               TargetType="RepeatButton">
+          <Setter Property="Template" Value="{StaticResource RedGrayButtonTemplate}"/>
         </Style>
-        <Style x:Key="WhiteRedStyle" BasedOn="{StaticResource BaseButtonStyle}" TargetType="RepeatButton">
-          <Style.Setters>
-            <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
-            <Setter Property="Background" Value="{StaticResource RedBrush}"/>
-          </Style.Setters>
-          <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-              <Setter Property="Background" Value="{StaticResource DarkRedBrush}"/>
-            </Trigger>
-          </Style.Triggers>
+        
+        <Style x:Key="WhiteRedStyle"
+               BasedOn="{StaticResource BaseButtonStyle}"
+               TargetType="RepeatButton">
+          <Setter Property="Template" Value="{StaticResource WhiteRedButtonTemplate}"/>
         </Style>
       </UniformGrid.Resources>
       <RepeatButton Grid.Row="0" Grid.Column="0" Command="{Binding ClearCommand}" Style="{StaticResource BlackGrayButtonStyle}">CE</RepeatButton>
