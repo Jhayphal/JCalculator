@@ -52,7 +52,7 @@
                   Duration="{StaticResource AnimationTime}"/>
         <ColorAnimation Storyboard.TargetName="ButtonBorder"
                   Storyboard.TargetProperty="(TextElement.Foreground).Color"
-                  To="{StaticResource GrayColor}"
+                  To="Gray"
                   Duration="{StaticResource AnimationTime}"/>
       </Storyboard>
     </ControlTemplate.Resources>

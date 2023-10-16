@@ -4,8 +4,8 @@
 	{
 		public static Queue<(TokenType Type, string Value)> Convert(IEnumerable<(TokenType Type, string Operator)> tokens, SupportedOperators supportedOperators)
 		{
-			Queue<(TokenType Type, string Value)> outputQueue = new Queue<(TokenType Type, string Value)>();
-			Stack<(TokenType Type, string Value)> stack = new Stack<(TokenType Type, string Value)>();
+			Queue<(TokenType Type, string Value)> outputQueue = new();
+			Stack<(TokenType Type, string Value)> stack = new();
 
 			foreach (var token in tokens)
 			{

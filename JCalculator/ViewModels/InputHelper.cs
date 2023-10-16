@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace JCalculator.ViewModels
 {
-	internal sealed class InputHelper
+	public sealed class InputHelper
 	{
 		private readonly MainWindowViewModel viewModel;
 		private TextBox? text;
@@ -14,18 +14,8 @@ namespace JCalculator.ViewModels
 			viewModel = mainWindowViewModel;
         }
 
-        public TextBox Text
-		{
-			get
-			{
-				if (text is null)
-				{
-					text = (TextBox)FocusManager.GetFocusedElement(((App)Application.Current).Window);
-				}
-
-				return text;
-			}
-		}
+		public TextBox Text
+			=> text ??= (TextBox)FocusManager.GetFocusedElement(((App)Application.Current).Window);
 
 		public void Set(string value)
 		{

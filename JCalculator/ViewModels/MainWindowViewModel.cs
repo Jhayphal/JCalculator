@@ -52,10 +52,7 @@ namespace JCalculator.ViewModels
 		private void CopyExpression() => Clipboard.SetText(ExecutedExpression);
 
 		[RelayCommand(CanExecute = nameof(CanDropLastToken))]
-		private void DropLastToken()
-		{
-			Value = calculator.DropLastToken(Value);
-		}
+		private void DropLastToken() => input.Set(calculator.DropLastToken(Value));
 
 		private bool CanDropLastToken() => Value.Length > 0;
 

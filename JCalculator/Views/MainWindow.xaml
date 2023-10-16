@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="400" MinHeight="400" MinWidth="300" Topmost="True"
-        FocusManager.FocusedElement="{Binding ElementName=Expression}">
+        FocusManager.FocusedElement="{Binding ElementName=Expression}"
+        Icon="pack://application:,,,/JCalculator;component/Images/calculator.png">
   <Grid>
     <Grid.Resources>
       <ResourceDictionary>

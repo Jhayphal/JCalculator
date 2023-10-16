@@ -7,7 +7,7 @@
 			if (queue == null)
 				throw new ArgumentNullException(nameof(queue));
 
-			Stack<double> operands = new Stack<double>();
+			Stack<double> operands = new();
 
 			if (queue.Count == 0)
 				return 0d;

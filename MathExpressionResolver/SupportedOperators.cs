@@ -2,7 +2,7 @@
 {
 	public sealed class SupportedOperators
 	{
-		private readonly HashSet<OperatorInfo> Operators = new HashSet<OperatorInfo>();
+		private readonly HashSet<OperatorInfo> Operators = new();
 
 		public bool Add(char @operator, int priority, bool leftAssociative, Func<double, double, double> calculate, char? opposite = null)
 		{
