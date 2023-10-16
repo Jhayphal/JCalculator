@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="400" MinHeight="400" MinWidth="300" Topmost="True"
+        Title="Калькулятор" Height="500" Width="400" MinHeight="400" MinWidth="300" Topmost="True"
         FocusManager.FocusedElement="{Binding ElementName=Expression}"
         Icon="pack://application:,,,/JCalculator;component/Images/calculator.png">
+  <Window.InputBindings>
+    <KeyBinding Key="Return" Command="{Binding GetResultCommand}"/>
+  </Window.InputBindings>
   <Grid>
     <Grid.Resources>
       <ResourceDictionary>
@@ -143,7 +146,7 @@
       <RepeatButton Grid.Row="5" Grid.Column="2" Command="{Binding PushCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource RedGrayStyle}">%</RepeatButton>
       <RepeatButton Grid.Row="6" Grid.Column="0" Command="{Binding PushCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">×</RepeatButton>
       <RepeatButton Grid.Row="6" Grid.Column="1" Command="{Binding PushCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">÷</RepeatButton>
-      <RepeatButton Grid.Row="6" Grid.Column="2" Command="{Binding GetResultCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource RedGrayStyle}">=</RepeatButton>
+      <RepeatButton Grid.Row="6" Grid.Column="2" Command="{Binding GetResultCommand}" Style="{StaticResource RedGrayStyle}">=</RepeatButton>
     </UniformGrid>
   </Grid>
 </Window>
