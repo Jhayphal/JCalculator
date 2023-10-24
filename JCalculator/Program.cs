@@ -26,6 +26,8 @@ namespace JCalculator
 			services.AddSingleton<App>();
 			services.AddSingleton<MainWindow>();
 			services.AddTransient<MainWindowViewModel>();
+			services.AddTransient<CalculatorModel>();
+			services.AddTransient<ScreenState>();
 			services.AddTransient<ICalculatorService, CalculatorService>();
 		}
 	}

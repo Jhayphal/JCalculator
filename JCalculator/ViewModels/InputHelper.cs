@@ -6,10 +6,10 @@ namespace JCalculator.ViewModels
 {
 	public sealed class InputHelper
 	{
-		private readonly MainWindowViewModel viewModel;
+		private readonly ScreenState viewModel;
 		private TextBox? text;
 
-        public InputHelper(MainWindowViewModel mainWindowViewModel)
+        public InputHelper(ScreenState mainWindowViewModel)
         {
 			viewModel = mainWindowViewModel;
         }
@@ -19,7 +19,7 @@ namespace JCalculator.ViewModels
 
 		public void Set(string value)
 		{
-			viewModel.Value = value;
+			viewModel.Expression = value;
 			Text.CaretIndex = value.Length;
 		}
 
@@ -28,12 +28,12 @@ namespace JCalculator.ViewModels
 			if (Text.SelectionLength > 0)
 			{
 				var newCaretIndex = Text.SelectionStart;
-				viewModel.Value = viewModel.Value.Remove(newCaretIndex, Text.SelectionLength);
+				viewModel.Expression = viewModel.Expression.Remove(newCaretIndex, Text.SelectionLength);
 				Text.CaretIndex = newCaretIndex;
 			}
 
 			var lastCaretIndex = Text.CaretIndex;
-			viewModel.Value = viewModel.Value.Insert(lastCaretIndex, @char);
+			viewModel.Expression = viewModel.Expression.Insert(lastCaretIndex, @char);
 			Text.CaretIndex = lastCaretIndex + 1;
 		}
 
@@ -42,13 +42,13 @@ namespace JCalculator.ViewModels
 			if (Text.SelectionLength > 0)
 			{
 				var newCaretIndex = Text.SelectionStart;
-				viewModel.Value = viewModel.Value.Remove(newCaretIndex, Text.SelectionLength);
+				viewModel.Expression = viewModel.Expression.Remove(newCaretIndex, Text.SelectionLength);
 				Text.CaretIndex = newCaretIndex;
 			}
 			else
 			{
 				var lastCaretIndex = Text.CaretIndex;
-				viewModel.Value = viewModel.Value.Remove(lastCaretIndex - 1, 1);
+				viewModel.Expression = viewModel.Expression.Remove(lastCaretIndex - 1, 1);
 				Text.CaretIndex = lastCaretIndex - 1;
 			}
 		}

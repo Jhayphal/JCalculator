@@ -1,97 +1,77 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Logging;
-using System.Windows;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
 
 namespace JCalculator.ViewModels
 {
-	public sealed partial class MainWindowViewModel : ObservableObject
+	public sealed partial class MainWindowViewModel : INotifyPropertyChanged
 	{
-		private const string ExecutedExpressionDefault = "0";
-		private const string ExecutedExpressionError = "?";
-		private const string ValueDefault = "";
+		private readonly CalculatorModel model;
 
-		private readonly ICalculatorService calculator;
-		private readonly ILogger<MainWindowViewModel> logger;
-		private readonly InputHelper input;
-
-		[ObservableProperty]
-		private string executedExpression = ExecutedExpressionDefault;
-
-		[ObservableProperty]
-		[NotifyCanExecuteChangedFor(nameof(ClearCommand))]
-		[NotifyCanExecuteChangedFor(nameof(DropLastTokenCommand))]
-		[NotifyCanExecuteChangedFor(nameof(DeleteCommand))]
-		[NotifyCanExecuteChangedFor(nameof(InverseCommand))]
-		private string value = string.Empty;
-
-        public MainWindowViewModel(ICalculatorService calculatorService, ILogger<MainWindowViewModel> logger)
-        {
-			calculator = calculatorService;
-			this.logger = logger;
-			input = new InputHelper(this);
-        }
-
-		[RelayCommand]
-		private void Push(string @char) => input.Insert(@char);
-
-		[RelayCommand(CanExecute = nameof(CanClear))]
-		private void Clear()
+		public MainWindowViewModel(CalculatorModel model)
 		{
-			Value = ValueDefault;
-			ExecutedExpression = ExecutedExpressionDefault;
+			this.model = model;
+
+			InsertCommand = new RelayCommand<string>(model.Insert!);
+			ClearCommand = new RelayCommand(model.Clear, model.CanClear);
+			PasteExpressionCommand = new RelayCommand(model.PasteExpression);
+			CopyResultCommand = new RelayCommand(model.CopyResult);
+			DropLastTokenCommand = new RelayCommand(model.DropLastToken, model.CanDropLastToken);
+			DeleteCommand = new RelayCommand(model.Delete, model.CanDelete);
+			InverseCommand = new RelayCommand(model.Inverse, model.CanInverse);
+			GetResultCommand = new RelayCommand(model.GetResult, model.CanGetResult);
+
+			this.model.Screen.PropertyChanged += Screen_PropertyChanged;
 		}
 
-		private bool CanClear()
-			=> Value != ValueDefault || ExecutedExpression != ExecutedExpressionDefault;
-
-		[RelayCommand]
-		private void PasteResult() => input.Text.Paste();
-
-		[RelayCommand]
-		private void CopyExpression() => Clipboard.SetText(ExecutedExpression);
-
-		[RelayCommand(CanExecute = nameof(CanDropLastToken))]
-		private void DropLastToken() => input.Set(calculator.DropLastToken(Value));
-
-		private bool CanDropLastToken() => Value.Length > 0;
-
-		[RelayCommand(CanExecute = nameof(CanDelete))]
-		private void Delete() => input.Delete();
-
-		private bool CanDelete() => Value.Length > 0;
-
-		[RelayCommand(CanExecute = nameof(CanInverse))]
-		private void Inverse()
+		public string Expression
 		{
-			if (calculator.TryInverseLastToken(Value, out var result))
-			{
-				input.Set(result);
-			}
+			get => model.Screen.Expression;
+			set => model.Screen.Expression = value;
 		}
 
-		private bool CanInverse() => Value.Length > 0;
-
-		partial void OnValueChanged(string value)
+		public string Result
 		{
-			if (calculator.TryCalculate(Value, out var result))
+			get => model.Screen.Result;
+			set => model.Screen.Result = value;
+		}
+
+		public IRelayCommand<string> InsertCommand { get; }
+
+		public IRelayCommand ClearCommand { get; }
+
+		public IRelayCommand PasteExpressionCommand { get; }
+
+		public IRelayCommand CopyResultCommand { get; }
+
+		public IRelayCommand DropLastTokenCommand { get; }
+
+		public IRelayCommand DeleteCommand { get; }
+
+		public IRelayCommand InverseCommand { get; }
+
+		public IRelayCommand GetResultCommand { get; }
+
+		private void Screen_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(ScreenState.Result))
 			{
-				ExecutedExpression = result;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
+
+				GetResultCommand.NotifyCanExecuteChanged();
+				CopyResultCommand.NotifyCanExecuteChanged();
+				ClearCommand.NotifyCanExecuteChanged();
 			}
-			else if (calculator.TryCalculate(Value[..^1], out result))
+			else if (e.PropertyName == nameof(ScreenState.Expression))
 			{
-				ExecutedExpression = result;
-			}
-			else
-			{
-				ExecutedExpression = ExecutedExpressionError;
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expression)));
+
+				DeleteCommand.NotifyCanExecuteChanged();
+				DropLastTokenCommand.NotifyCanExecuteChanged();
+				InverseCommand.NotifyCanExecuteChanged();
+				ClearCommand.NotifyCanExecuteChanged();
 			}
 		}
 
-		[RelayCommand(CanExecute = nameof(CanGetResult))]
-		private void GetResult() => input.Set(ExecutedExpression);
-
-		private bool CanGetResult()
-			=> ExecutedExpression != ExecutedExpressionError;
+		public event PropertyChangedEventHandler? PropertyChanged;
 	}
 }
