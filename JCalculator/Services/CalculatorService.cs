@@ -1,7 +1,6 @@
 ﻿using MathExpressionResolver;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Globalization;
 using System.Linq;
 
 namespace JCalculator.Services;
@@ -72,7 +71,7 @@ public class CalculatorService : ICalculatorService
                     }
                     else
                     {
-                        lastToken.Value = (-double.Parse(lastToken.Value, NumberFormatInfo.InvariantInfo)).ToString();
+                        lastToken.Value = (-double.Parse(lastToken.Value)).ToString();
                         tokens[^1] = lastToken;
                     }
 

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 
 namespace MathExpressionResolver;
 
@@ -9,6 +10,8 @@ public class Tokenizer
 		Number,
 		Other
 	}
+
+	private static readonly string NumberDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
 
 	public Tokenizer(SupportedOperators supportedOperators)
 	{
@@ -61,14 +64,7 @@ public class Tokenizer
 			{
 				context = TokenizerContext.Number;
 
-				if (lexeme == ',')
-				{
-					cache.Append('.');
-				}
-				else
-				{
-					cache.Append(lexeme);
-				}
+				cache.Append(lexeme);
 			}
 		}
 
@@ -83,6 +79,15 @@ public class Tokenizer
 		if (cache.Length == 0)
 		{
 			yield break;
+		}
+
+		if (NumberDecimalSeparator != ",")
+		{
+			cache.Replace(",", NumberDecimalSeparator);
+		}
+		else if (NumberDecimalSeparator != ".")
+		{
+			cache.Replace(".", NumberDecimalSeparator);
 		}
 
 		var result = cache.ToString();

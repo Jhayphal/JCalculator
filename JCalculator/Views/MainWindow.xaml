@@ -7,9 +7,11 @@
         Title="Калькулятор" Height="500" Width="400" MinHeight="400" MinWidth="300" Topmost="True"
         FocusManager.FocusedElement="{Binding ElementName=Expression}"
         Icon="pack://application:,,,/JCalculator;component/Images/calculator.png">
+  
   <Window.InputBindings>
     <KeyBinding Key="Return" Command="{Binding GetResultCommand}"/>
   </Window.InputBindings>
+  
   <Grid>
     <Grid.Resources>
       <ResourceDictionary>
@@ -25,10 +27,12 @@
         <SolidColorBrush x:Key="WhiteBrush" Color="#EBEBEB"/>
       </ResourceDictionary>
     </Grid.Resources>
+    
     <Grid.RowDefinitions>
       <RowDefinition Height="3*"/>
       <RowDefinition Height="12*"/>
     </Grid.RowDefinitions>
+    
     <Grid Grid.Row="0" Background="{StaticResource BlackBrush}">
       <Grid.Resources>
         <Style x:Key="CopyPasteButtonStyle" TargetType="{x:Type Button}">
@@ -43,10 +47,12 @@
           <Setter Property="Template" Value="{StaticResource ScreenButtonTemplate}"/>
         </Style>
       </Grid.Resources>
+      
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
         <RowDefinition Height="2*"/>
       </Grid.RowDefinitions>
+      
       <DockPanel Grid.Row="0">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Right">
           <Button Command="{Binding CopyResultCommand}"
@@ -54,6 +60,7 @@
                   Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
                   ToolTip="Копировать">⎘</Button>
         </Viewbox>
+        
         <Viewbox HorizontalAlignment="Right">
           <TextBox Foreground="{StaticResource WhiteBrush}" 
                    Background="{StaticResource BlackBrush}" 
@@ -62,6 +69,7 @@
                    Text="{Binding Result}"/>
         </Viewbox>
       </DockPanel>
+      
       <DockPanel Grid.Row="1">
         <Viewbox DockPanel.Dock="Left" HorizontalAlignment="Stretch">
           <Button Command="{Binding PasteExpressionCommand}"
@@ -78,12 +86,14 @@
         </Viewbox>
       </DockPanel>
     </Grid>
+    
     <UniformGrid Grid.Row="1" Rows="7" Columns="3" Background="{StaticResource BlackBrush}">
       <UniformGrid.Resources>
         <SolidColorBrush x:Key="RedBrush" Color="#CC4F55"/>
         <SolidColorBrush x:Key="DarkRedBrush" Color="#A14045"/>
         <SolidColorBrush x:Key="GrayBrush" Color="#D3D3D5"/>
         <SolidColorBrush x:Key="DarkGrayBrush" Color="#B2B2B4"/>
+        
         <Style x:Key="BaseButtonStyle" TargetType="RepeatButton">
           <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
           <Setter Property="FontSize" Value="25"/>
@@ -126,27 +136,87 @@
           <Setter Property="Template" Value="{StaticResource WhiteRedButtonTemplate}"/>
         </Style>
       </UniformGrid.Resources>
-      <RepeatButton Grid.Row="0" Grid.Column="0" Command="{Binding ClearCommand}" Style="{StaticResource BlackGrayButtonStyle}">CE</RepeatButton>
-      <RepeatButton Grid.Row="0" Grid.Column="1" Command="{Binding DropLastTokenCommand}" Style="{StaticResource BlackGrayButtonStyle}">C</RepeatButton>
-      <RepeatButton Grid.Row="0" Grid.Column="2" Command="{Binding DeleteCommand}" Style="{StaticResource RedGrayStyle}">◀</RepeatButton>
-      <RepeatButton Grid.Row="1" Grid.Column="0" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">7</RepeatButton>
-      <RepeatButton Grid.Row="1" Grid.Column="1" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">8</RepeatButton>
-      <RepeatButton Grid.Row="1" Grid.Column="2" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">9</RepeatButton>
-      <RepeatButton Grid.Row="2" Grid.Column="0" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">4</RepeatButton>
-      <RepeatButton Grid.Row="2" Grid.Column="1" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">5</RepeatButton>
-      <RepeatButton Grid.Row="2" Grid.Column="2" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">6</RepeatButton>
-      <RepeatButton Grid.Row="3" Grid.Column="0" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">1</RepeatButton>
-      <RepeatButton Grid.Row="3" Grid.Column="1" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">2</RepeatButton>
-      <RepeatButton Grid.Row="3" Grid.Column="2" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">3</RepeatButton>
-      <RepeatButton Grid.Row="4" Grid.Column="0" Command="{Binding InverseCommand}" Style="{StaticResource BlackWhiteButtonStyle}">±</RepeatButton>
-      <RepeatButton Grid.Row="4" Grid.Column="1" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">0</RepeatButton>
-      <RepeatButton Grid.Row="4" Grid.Column="2" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource BlackWhiteButtonStyle}">,</RepeatButton>
-      <RepeatButton Grid.Row="5" Grid.Column="0" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">+</RepeatButton>
-      <RepeatButton Grid.Row="5" Grid.Column="1" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">-</RepeatButton>
-      <RepeatButton Grid.Row="5" Grid.Column="2" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource RedGrayStyle}">%</RepeatButton>
-      <RepeatButton Grid.Row="6" Grid.Column="0" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">×</RepeatButton>
-      <RepeatButton Grid.Row="6" Grid.Column="1" Command="{Binding InsertCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Style="{StaticResource WhiteRedStyle}">÷</RepeatButton>
-      <RepeatButton Grid.Row="6" Grid.Column="2" Command="{Binding GetResultCommand}" Style="{StaticResource RedGrayStyle}">=</RepeatButton>
+      
+      <RepeatButton Grid.Row="0" Grid.Column="0"
+                    Command="{Binding ClearCommand}"
+                    Style="{StaticResource BlackGrayButtonStyle}">CE</RepeatButton>
+      <RepeatButton Grid.Row="0" Grid.Column="1"
+                    Command="{Binding DropLastTokenCommand}"
+                    Style="{StaticResource BlackGrayButtonStyle}">C</RepeatButton>
+      <RepeatButton Grid.Row="0" Grid.Column="2"
+                    Command="{Binding DeleteCommand}"
+                    Style="{StaticResource RedGrayStyle}">◀</RepeatButton>
+      <RepeatButton Grid.Row="1" Grid.Column="0"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">7</RepeatButton>
+      <RepeatButton Grid.Row="1" Grid.Column="1"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">8</RepeatButton>
+      <RepeatButton Grid.Row="1" Grid.Column="2"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">9</RepeatButton>
+      <RepeatButton Grid.Row="2" Grid.Column="0"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">4</RepeatButton>
+      <RepeatButton Grid.Row="2" Grid.Column="1"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">5</RepeatButton>
+      <RepeatButton Grid.Row="2" Grid.Column="2"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">6</RepeatButton>
+      <RepeatButton Grid.Row="3" Grid.Column="0"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">1</RepeatButton>
+      <RepeatButton Grid.Row="3" Grid.Column="1"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">2</RepeatButton>
+      <RepeatButton Grid.Row="3" Grid.Column="2"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">3</RepeatButton>
+      <RepeatButton Grid.Row="4" Grid.Column="0"
+                    Command="{Binding InverseCommand}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">±</RepeatButton>
+      <RepeatButton Grid.Row="4" Grid.Column="1"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}">0</RepeatButton>
+      <RepeatButton Grid.Row="4" Grid.Column="2"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource BlackWhiteButtonStyle}"
+                    Content="{Binding NumberDecimalSeparator}"/>
+      <RepeatButton Grid.Row="5" Grid.Column="0"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource WhiteRedStyle}">+</RepeatButton>
+      <RepeatButton Grid.Row="5" Grid.Column="1"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource WhiteRedStyle}">-</RepeatButton>
+      <RepeatButton Grid.Row="5" Grid.Column="2"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource RedGrayStyle}">%</RepeatButton>
+      <RepeatButton Grid.Row="6" Grid.Column="0"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource WhiteRedStyle}">×</RepeatButton>
+      <RepeatButton Grid.Row="6" Grid.Column="1"
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"
+                    Style="{StaticResource WhiteRedStyle}">÷</RepeatButton>
+      <RepeatButton Grid.Row="6" Grid.Column="2"
+                    Command="{Binding GetResultCommand}"
+                    Style="{StaticResource RedGrayStyle}">=</RepeatButton>
     </UniformGrid>
   </Grid>
 </Window>

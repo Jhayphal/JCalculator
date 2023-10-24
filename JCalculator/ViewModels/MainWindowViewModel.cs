@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using JCalculator.Models;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace JCalculator.ViewModels;
 
@@ -35,6 +36,8 @@ public sealed partial class MainWindowViewModel : INotifyPropertyChanged
 		get => model.Screen.Result;
 		set => model.Screen.Result = value;
 	}
+
+	public string NumberDecimalSeparator { get; } = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
 
 	public IRelayCommand<string> InsertCommand { get; }
 

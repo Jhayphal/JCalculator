@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace MathExpressionResolver;
+﻿namespace MathExpressionResolver;
 
 public static class ReversePolishNotationResolver
 {
@@ -21,7 +19,7 @@ public static class ReversePolishNotationResolver
 			switch (current.Type)
 			{
 				case TokenType.Number:
-					var value = double.Parse(current.Value, NumberFormatInfo.InvariantInfo);
+					var value = double.Parse(current.Value);
 
 					operands.Push(value);
 
