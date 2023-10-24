@@ -61,7 +61,14 @@ namespace MathExpressionResolver
 				{
 					context = TokenizerContext.Number;
 
-					cache.Append(lexeme);
+					if (lexeme == ',')
+					{
+						cache.Append('.');
+					}
+					else
+					{
+						cache.Append(lexeme);
+					}
 				}
 			}
 

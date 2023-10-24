@@ -1,5 +1,6 @@
 ﻿using MathExpressionResolver;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace JCalculator.ViewModels
@@ -59,7 +60,7 @@ namespace JCalculator.ViewModels
 						}
 						else
 						{
-							lastToken.Value = (-double.Parse(lastToken.Value)).ToString();
+							lastToken.Value = (-double.Parse(lastToken.Value, NumberFormatInfo.InvariantInfo)).ToString();
 							tokens[^1] = lastToken;
 						}
 
