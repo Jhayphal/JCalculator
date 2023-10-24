@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using JCalculator.Models;
 using System.ComponentModel;
 
 namespace JCalculator.ViewModels;
@@ -53,7 +54,7 @@ public sealed partial class MainWindowViewModel : INotifyPropertyChanged
 
 	private void Screen_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 	{
-		if (e.PropertyName == nameof(ScreenState.Result))
+		if (e.PropertyName == nameof(ScreenViewModel.Result))
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Result)));
 
@@ -61,7 +62,7 @@ public sealed partial class MainWindowViewModel : INotifyPropertyChanged
 			CopyResultCommand.NotifyCanExecuteChanged();
 			ClearCommand.NotifyCanExecuteChanged();
 		}
-		else if (e.PropertyName == nameof(ScreenState.Expression))
+		else if (e.PropertyName == nameof(ScreenViewModel.Expression))
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Expression)));
 

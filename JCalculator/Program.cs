@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using JCalculator.Views;
 using JCalculator.ViewModels;
 using Microsoft.Extensions.Logging;
+using JCalculator.Models;
+using JCalculator.Services;
 
 namespace JCalculator;
 
@@ -27,7 +29,7 @@ public sealed class Program
 		services.AddSingleton<MainWindow>();
 		services.AddTransient<MainWindowViewModel>();
 		services.AddTransient<CalculatorModel>();
-		services.AddTransient<ScreenState>();
+		services.AddTransient<ScreenViewModel>();
 		services.AddTransient<ICalculatorService, CalculatorService>();
 	}
 }

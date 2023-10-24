@@ -2,7 +2,7 @@
 
 namespace JCalculator.ViewModels;
 
-public partial class ScreenState : ObservableObject
+public partial class ScreenViewModel : ObservableObject
 {
 	public const string ResultDefault = "0";
 	public const string ResultError = "?";
