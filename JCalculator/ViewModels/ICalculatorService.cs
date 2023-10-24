@@ -1,11 +1,10 @@
-﻿namespace JCalculator.ViewModels
+﻿namespace JCalculator.ViewModels;
+
+public interface ICalculatorService
 {
-	public interface ICalculatorService
-	{
-		bool TryCalculate(string expression, out string result);
+	bool TryCalculate(string expression, out string result);
 
-		bool TryInverseLastToken(string expression, out string result);
+	bool TryInverseLastToken(string expression, out string result);
 
-		string DropLastToken(string expression);
-	}
+	string DropLastToken(string expression);
 }

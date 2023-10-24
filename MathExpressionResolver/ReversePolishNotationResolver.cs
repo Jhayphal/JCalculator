@@ -1,48 +1,47 @@
 ﻿using System.Globalization;
 
-namespace MathExpressionResolver
+namespace MathExpressionResolver;
+
+public static class ReversePolishNotationResolver
 {
-	public static class ReversePolishNotationResolver
+	public static double Calculate(Queue<(TokenType Type, string Value)> queue, SupportedOperators operators)
 	{
-		public static double Calculate(Queue<(TokenType Type, string Value)> queue, SupportedOperators operators)
+		if (queue == null)
+			throw new ArgumentNullException(nameof(queue));
+
+		Stack<double> operands = new();
+
+		if (queue.Count == 0)
+			return 0d;
+
+		while (queue.Count > 0)
 		{
-			if (queue == null)
-				throw new ArgumentNullException(nameof(queue));
+			var current = queue.Dequeue();
 
-			Stack<double> operands = new();
-
-			if (queue.Count == 0)
-				return 0d;
-
-			while (queue.Count > 0)
+			switch (current.Type)
 			{
-				var current = queue.Dequeue();
+				case TokenType.Number:
+					var value = double.Parse(current.Value, NumberFormatInfo.InvariantInfo);
 
-				switch (current.Type)
-				{
-					case TokenType.Number:
-						var value = double.Parse(current.Value, NumberFormatInfo.InvariantInfo);
+					operands.Push(value);
 
-						operands.Push(value);
+					break;
 
-						break;
+				case TokenType.Operator:
+					var b = operands.Pop();
+					var a = operands.Pop();
 
-					case TokenType.Operator:
-						var b = operands.Pop();
-						var a = operands.Pop();
+					var operationResult = operators.Calculate(current.Value[0], a, b);
 
-						var operationResult = operators.Calculate(current.Value[0], a, b);
+					operands.Push(operationResult);
 
-						operands.Push(operationResult);
+					break;
 
-						break;
-
-					default:
-						throw new NotImplementedException(current.Type.ToString());
-				}
+				default:
+					throw new NotImplementedException(current.Type.ToString());
 			}
-
-			return operands.Pop();
 		}
+
+		return operands.Pop();
 	}
 }

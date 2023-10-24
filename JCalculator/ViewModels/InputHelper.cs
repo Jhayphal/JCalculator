@@ -2,55 +2,54 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace JCalculator.ViewModels
+namespace JCalculator.ViewModels;
+
+public sealed class InputHelper
 {
-	public sealed class InputHelper
-	{
-		private readonly ScreenState viewModel;
-		private TextBox? text;
+	private readonly ScreenState viewModel;
+	private TextBox? text;
 
         public InputHelper(ScreenState mainWindowViewModel)
         {
-			viewModel = mainWindowViewModel;
+		viewModel = mainWindowViewModel;
         }
 
-		public TextBox Text
-			=> text ??= (TextBox)FocusManager.GetFocusedElement(((App)Application.Current).Window);
+	public TextBox Text
+		=> text ??= (TextBox)FocusManager.GetFocusedElement(((App)Application.Current).Window);
 
-		public void Set(string value)
+	public void Set(string value)
+	{
+		viewModel.Expression = value;
+		Text.CaretIndex = value.Length;
+	}
+
+	public void Insert(string @char)
+	{
+		if (Text.SelectionLength > 0)
 		{
-			viewModel.Expression = value;
-			Text.CaretIndex = value.Length;
+			var newCaretIndex = Text.SelectionStart;
+			viewModel.Expression = viewModel.Expression.Remove(newCaretIndex, Text.SelectionLength);
+			Text.CaretIndex = newCaretIndex;
 		}
 
-		public void Insert(string @char)
-		{
-			if (Text.SelectionLength > 0)
-			{
-				var newCaretIndex = Text.SelectionStart;
-				viewModel.Expression = viewModel.Expression.Remove(newCaretIndex, Text.SelectionLength);
-				Text.CaretIndex = newCaretIndex;
-			}
+		var lastCaretIndex = Text.CaretIndex;
+		viewModel.Expression = viewModel.Expression.Insert(lastCaretIndex, @char);
+		Text.CaretIndex = lastCaretIndex + 1;
+	}
 
+	public void Delete()
+	{
+		if (Text.SelectionLength > 0)
+		{
+			var newCaretIndex = Text.SelectionStart;
+			viewModel.Expression = viewModel.Expression.Remove(newCaretIndex, Text.SelectionLength);
+			Text.CaretIndex = newCaretIndex;
+		}
+		else
+		{
 			var lastCaretIndex = Text.CaretIndex;
-			viewModel.Expression = viewModel.Expression.Insert(lastCaretIndex, @char);
-			Text.CaretIndex = lastCaretIndex + 1;
-		}
-
-		public void Delete()
-		{
-			if (Text.SelectionLength > 0)
-			{
-				var newCaretIndex = Text.SelectionStart;
-				viewModel.Expression = viewModel.Expression.Remove(newCaretIndex, Text.SelectionLength);
-				Text.CaretIndex = newCaretIndex;
-			}
-			else
-			{
-				var lastCaretIndex = Text.CaretIndex;
-				viewModel.Expression = viewModel.Expression.Remove(lastCaretIndex - 1, 1);
-				Text.CaretIndex = lastCaretIndex - 1;
-			}
+			viewModel.Expression = viewModel.Expression.Remove(lastCaretIndex - 1, 1);
+			Text.CaretIndex = lastCaretIndex - 1;
 		}
 	}
 }

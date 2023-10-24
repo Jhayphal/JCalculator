@@ -1,102 +1,101 @@
 ﻿using System.Text;
 
-namespace MathExpressionResolver
+namespace MathExpressionResolver;
+
+public class Tokenizer
 {
-	public class Tokenizer
+	private enum TokenizerContext
 	{
-		private enum TokenizerContext
+		Number,
+		Other
+	}
+
+	public Tokenizer(SupportedOperators supportedOperators)
+	{
+		Operators = supportedOperators ?? throw new ArgumentNullException(nameof(supportedOperators));
+	}
+
+	public readonly SupportedOperators Operators;
+
+	public IEnumerable<(TokenType Type, string Value)> GetTokens(string expression)
+	{
+		StringBuilder cache = new();
+
+		TokenizerContext context = TokenizerContext.Other;
+		foreach(var lexeme in expression)
 		{
-			Number,
-			Other
-		}
-
-		public Tokenizer(SupportedOperators supportedOperators)
-		{
-			Operators = supportedOperators ?? throw new ArgumentNullException(nameof(supportedOperators));
-		}
-
-		public readonly SupportedOperators Operators;
-
-		public IEnumerable<(TokenType Type, string Value)> GetTokens(string expression)
-		{
-			StringBuilder cache = new();
-
-			TokenizerContext context = TokenizerContext.Other;
-			foreach(var lexeme in expression)
+			if (lexeme == '(')
 			{
-				if (lexeme == '(')
+				context = TokenizerContext.Other;
+
+				foreach(var result in GetNumberAndClearCache(cache))
 				{
-					context = TokenizerContext.Other;
-
-					foreach(var result in GetNumberAndClearCache(cache))
-					{
-						yield return result;
-					}
-
-					yield return (TokenType.OpenBracket, "(");
+					yield return result;
 				}
-				else if (lexeme == ')')
-				{
-					context = TokenizerContext.Other;
 
-					foreach (var result in GetNumberAndClearCache(cache))
-					{
-						yield return result;
-					}
-
-					yield return (TokenType.CloseBracket, ")");
-				}
-				else if (Operators.IsSupported(lexeme) && (lexeme != '-' || context == TokenizerContext.Number))
-				{
-					context = TokenizerContext.Other;
-
-					foreach (var result in GetNumberAndClearCache(cache))
-					{
-						yield return result;
-					}
-
-					yield return (TokenType.Operator, lexeme.ToString());
-				}
-				else
-				{
-					context = TokenizerContext.Number;
-
-					if (lexeme == ',')
-					{
-						cache.Append('.');
-					}
-					else
-					{
-						cache.Append(lexeme);
-					}
-				}
+				yield return (TokenType.OpenBracket, "(");
 			}
-
-			foreach (var result in GetNumberAndClearCache(cache))
+			else if (lexeme == ')')
 			{
-				yield return result;
+				context = TokenizerContext.Other;
+
+				foreach (var result in GetNumberAndClearCache(cache))
+				{
+					yield return result;
+				}
+
+				yield return (TokenType.CloseBracket, ")");
 			}
-		}
-
-		private static IEnumerable<(TokenType Type, string Value)> GetNumberAndClearCache(StringBuilder cache)
-		{
-			if (cache.Length == 0)
+			else if (Operators.IsSupported(lexeme) && (lexeme != '-' || context == TokenizerContext.Number))
 			{
-				yield break;
-			}
+				context = TokenizerContext.Other;
 
-			var result = cache.ToString();
-			cache.Clear();
+				foreach (var result in GetNumberAndClearCache(cache))
+				{
+					yield return result;
+				}
 
-			if (result == "-")
-			{
-				yield return (TokenType.Number, "-1");
-				yield return (TokenType.Operator, "*");
+				yield return (TokenType.Operator, lexeme.ToString());
 			}
 			else
 			{
-				yield return (TokenType.Number, result);
+				context = TokenizerContext.Number;
+
+				if (lexeme == ',')
+				{
+					cache.Append('.');
+				}
+				else
+				{
+					cache.Append(lexeme);
+				}
 			}
+		}
+
+		foreach (var result in GetNumberAndClearCache(cache))
+		{
+			yield return result;
+		}
+	}
+
+	private static IEnumerable<(TokenType Type, string Value)> GetNumberAndClearCache(StringBuilder cache)
+	{
+		if (cache.Length == 0)
+		{
+			yield break;
+		}
+
+		var result = cache.ToString();
+		cache.Clear();
+
+		if (result == "-")
+		{
+			yield return (TokenType.Number, "-1");
+			yield return (TokenType.Operator, "*");
+		}
+		else
+		{
+			yield return (TokenType.Number, result);
 		}
 	}
 }
